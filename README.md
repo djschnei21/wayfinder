@@ -14,12 +14,34 @@ Wayfinder is a service discovery and navigation tool designed to work with Hashi
 
 ## Prerequisites
 
-- Python 3.7+
 - HashiCorp Nomad (required)
 - HashiCorp Consul (optional)
-- Docker (for container deployment)
 
-## Local Development
+## Deployment Options
+
+### Quick Start with Docker
+
+The easiest way to deploy Wayfinder is using the pre-built Docker image:
+
+```bash
+docker run -p 5000:5000 djschne/wayfinder:latest
+```
+
+### Deploy to Nomad
+
+Deploy Wayfinder to your Nomad cluster using the provided job specification:
+
+```bash
+nomad job run wayfinder.nomad
+```
+
+The job specification includes:
+- Pre-built Docker image (`djschne/wayfinder:latest`)
+- Service registration with health checks
+- Auto-configured network ports
+- Resource allocation (CPU and Memory)
+
+### Local Development
 
 1. Clone the repository:
 ```bash
@@ -31,7 +53,7 @@ cd wayfinder
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: .\venv\Scripts\activate
-pip install flask requests
+pip install -r requirements.txt
 ```
 
 3. Run the application:
@@ -40,56 +62,6 @@ python app.py
 ```
 
 The application will be available at `http://localhost:5000`
-
-## Deployment to Nomad
-
-### 1. Build the Docker Image
-
-First, create a Dockerfile in your project root:
-
-```dockerfile
-FROM python:3.9-slim
-
-WORKDIR /app
-COPY . .
-RUN pip install flask requests
-
-EXPOSE 5000
-CMD ["python", "app.py"]
-```
-
-Build and tag the image:
-```bash
-docker build -t wayfinder:latest .
-```
-
-### 2. Deploy using Nomad
-
-The provided `wayfinder.nomad` job specification can be used to deploy Wayfinder:
-
-```bash
-nomad job run wayfinder.nomad
-```
-
-The job specification includes:
-- Service registration with health checks
-- Docker task driver configuration
-- Resource allocation (CPU and Memory)
-- Network port mapping
-
-### 3. Accessing Wayfinder
-
-Once deployed, Wayfinder will be accessible through the Nomad service discovery:
-
-1. Find the allocated port:
-```bash
-nomad job status wayfinder
-```
-
-2. Access the UI through your browser:
-```
-http://<nomad-client-ip>:<allocated-port>
-```
 
 ## Configuration
 
@@ -117,6 +89,8 @@ http://<nomad-client-ip>:<allocated-port>
 ```
 wayfinder/
 ├── app.py              # Main application code
+├── requirements.txt    # Python dependencies
+├── Dockerfile         # Container build configuration
 ├── templates/
 │   ├── index.html     # Main service dashboard
 │   └── setup.html     # Configuration page
