@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wayfinder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMENBOEUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJrZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXJvdXRlIj48Y2lyY2xlIGN4PSI2IiBjeT0iMTkiIHI9IjMiLz48cGF0aCBkPSJNOSAxOWg4LjVhMy41IDMuNSAwIDAgMCAwLTdoLTExYTMuNSAzLjUgMCAwIDEgMC03SDE1Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSI1IiByPSIzIi8+PC9zdmc+">
+  <style>
+    :root {
+      /* Light mode variables */
+      --bg-primary: #f8f9fa;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f1f3f5;
+      --text-primary: #212529;
+      --text-secondary: #495057;
+      --accent: #00CA8E;  /* Changed from cyan to Nomad green */
+      --selection: rgba(0, 202, 142, 0.1);  /* Updated to use Nomad green */
+      --border-subtle: #dee2e6;
+    }
+
+    /* Dark mode overrides - K9s style */
+    body.dark-mode {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #252525;
+      --bg-tertiary: #303030;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --accent: #00CA8E;  /* Changed from cyan to Nomad green */
+      --selection: rgba(0, 202, 142, 0.2);  /* Updated to use Nomad green */
+      --border-subtle: #383838;
+    }
+
+    /* Update transitions for smooth mode switching */
+    * {
+      transition: background-color 0.3s,
+                  color 0.3s,
+                  border-color 0.3s,
+                  transform 0.3s;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      min-height: 100vh;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .title-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .title-icon {
+      display: flex;
+      align-items: center;
+      width: 32px;
+      height: 32px;
+    }
+
+    .title-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--accent);
+    }
+
+    h1 {
+      color: var(--accent);
+      margin: 0;
+      padding: 0;
+      font-size: 2rem;
+      font-weight: normal;
+      line-height: 1;
+    }
+
+    .namespace-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 20px;
+      padding: 15px;
+    }
+
+    .namespace-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: normal;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+    }
+
+    .namespace-logo {
+      width: 24px;
+      height: 24px;
+    }
+
+    .namespace-logo img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .job-title {
+      font-size: 1.1rem;
+      font-weight: normal;
+      color: var(--accent);
+      margin-bottom: 8px;
+      padding: 5px;
+      background: var(--bg-tertiary);
+    }
+
+    .service-card {
+      display: flex;
+      width: 100%;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-tertiary);
+      margin-bottom: 4px;
+      transition: transform var(--transition-speed);
+      align-items: stretch;  /* Make all children full height */
+    }
+
+    .service-card:hover {
+      transform: translateX(1px);
+      background: var(--selection);
+    }
+
+    .service-name {
+      flex: 1;
+      padding: 8px 12px;
+      text-align: left;
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .service-url {
+      font-size: 0.8em;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .service-name:hover {
+      color: var(--accent);
+    }
+
+    .service-name:hover .service-url {
+      color: var(--accent);
+    }
+
+    .btn {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      font-family: inherit;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: var(--selection);
+      color: var(--accent);
+    }
+
+    .copy-btn {
+      width: 100px;
+      text-align: center;
+      border-left: 1px solid var(--border-subtle);
+      display: flex;          /* Added for vertical centering */
+      align-items: center;    /* Added for vertical centering */
+      justify-content: center;/* Added for horizontal centering */
+    }
+
+    .header-buttons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: var(--bg-secondary);
+      padding: 2rem;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .job-group {
+      margin-bottom: 15px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-secondary);
+      padding: 10px;
+    }
+
+    .title-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .title-icon svg {
+      stroke: var(--accent);
+    }
+
+    .health-status {
+      position: relative;  /* For tooltip positioning */
+      width: 60px;
+      text-align: center;
+      border-left: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+    }
+
+    .tooltip {
+      visibility: hidden;
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      width: max-content;
+      max-width: 300px;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .health-status:hover .tooltip {
+      visibility: visible;
+    }
+
+    .check-item {
+      margin: 4px 0;
+      padding: 4px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .check-item:last-child {
+      border-bottom: none;
+    }
+
+    .check-name {
+      font-weight: bold;
+      color: var(--text-primary);
+    }
+
+    .check-details {
+      color: var(--text-secondary);
+      font-size: 0.9em;
+      white-space: pre-wrap;
+      margin-top: 2px;
+    }
+
+    .health-up {
+      color: #00b894;  /* A nice green that works in both light/dark modes */
+    }
+
+    .health-down {
+      color: #d63031;  /* A nice red that works in both light/dark modes */
+    }
+
+    .health-unknown {
+      color: #95a5a6;  /* A neutral grey that works in both light/dark modes */
+    }
+  </style>
+</head>
+<body>
+  <div class="header-buttons">
+    <button class="btn" onclick="openNomadUI()">Nomad UI</button>
+    <button class="btn settings-btn" onclick="window.location.href='/'">Settings</button>
+    <button class="btn toggle-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </div>
+  <div class="container">
+    <header>
+      <div class="title-container">
+        <div class="title-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-route"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>
+        </div>
+        <h1>Wayfinder</h1>
+      </div>
+    </header>
+    <div id="services-container">
+      <!-- Services will be loaded here dynamically -->
+    </div>
+  </div>
+  <script>
+    function copyToClipboard(url) {
+      wayfinder.clipboard.writeText(url).then(() => {
+        alert('Copied: ' + url);
+      }).catch(err => { console.error('Copy failed:', err); });
+    }
+    function toggleDarkMode() {
+      const darkModeOn = document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', darkModeOn);
+      // Reload services to update logos
+      loadServices();
+    }
+    // Add service loading function
+    async function loadServices() {
+      const container = document.getElementById('services-container');
+      try {
+        const response = await fetch('/api/services');
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to load services');
+        }
+
+        // Clear only the services container
+        container.innerHTML = '';
+        
+        // Sort namespaces
+        const sortedNamespaces = Object.keys(data).sort();
+        
+        if (sortedNamespaces.length === 0) {
+          container.innerHTML = '<div class="namespace-card"><div class="namespace-header">No services found</div></div>';
+          return;
+        }
+        
+        for (const namespace of sortedNamespaces) {
+          const services = data[namespace];
+          const groupedServices = {};
+          
+          // Determine which logo to use based on namespace
+          const isConsul = namespace.startsWith('consul/');
+          const logoPath = isConsul ? 
+            `/static/logos/${document.body.classList.contains('dark-mode') ? 'consul-dark' : 'consul-light'}.svg` :
+            `/static/logos/${document.body.classList.contains('dark-mode') ? 'nomad-dark' : 'nomad-light'}.svg`;
+          
+          // Extract the actual namespace name without the consul/ prefix
+          const displayNamespace = isConsul ? namespace.replace('consul/', '') : namespace;
+          
+          // Group services by job
+          services.forEach(service => {
+            if (!groupedServices[service.job]) {
+              groupedServices[service.job] = [];
+            }
+            groupedServices[service.job].push(service);
+          });
+          
+          // Sort jobs and their services
+          const sortedJobs = Object.keys(groupedServices).sort();
+          
+          const namespaceHtml = `
+            <div class="namespace-card">
+              <div class="namespace-header">
+                <div class="namespace-logo">
+                  <img src="${logoPath}" alt="${isConsul ? 'Consul' : 'Nomad'} logo">
+                </div>
+                Namespace: ${displayNamespace}
+              </div>
+              ${sortedJobs.map(job => `
+                <div class="job-group">
+                  <div class="job-title">Job: ${job}</div>
+                  <div class="grid">
+                    ${groupedServices[job]
+                      .sort((a, b) => a.name.localeCompare(b.name))
+                      .map(service => `
+                      <div class="service-card">
+                        <a href="${service.navigate_url}" 
+                           class="service-name">
+                          <span>${service.name}</span>
+                          <span class="service-url">${service.full_service_url || ''}</span>
+                        </a>
+                        <div class="health-status ${
+                          service.health_checks.length === 0 ? 'health-unknown' : 
+                          service.healthy ? 'health-up' : 'health-down'
+                        }">
+                          ${service.health_checks.length === 0 ? '?' : 
+                            service.healthy ? '▲' : '▼'
+                          }
+                          <div class="tooltip">
+                            ${service.health_checks.map(check => `
+                              <div class="check-item">
+                                <div class="check-name">${check.name}</div>
+                                <div class="check-details">Status: ${check.status}${
+                                  check.output ? '\nOutput: ' + check.output : ''
+                                }</div>
+                              </div>
+                            `).join('') || 'No health checks configured'}
+                          </div>
+                        </div>
+                        <div class="btn copy-btn" onclick="copyToClipboard('${service.full_service_url}')">Copy</div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+          container.insertAdjacentHTML('beforeend', namespaceHtml);
+        }
+      } catch (error) {
+        console.error('Error loading services:', error);
+        container.innerHTML = `
+          <div class="namespace-card">
+            <div class="namespace-header">Error</div>
+            <div style="padding: 1rem;">Failed to load services: ${error.message}</div>
+          </div>
+        `;
+      }
+    }
+
+    async function openNomadUI() {
+      try {
+        const response = await fetch('/api/config');
+        const config = await response.json();
+        if (config.nomad_url) {
+          window.open(config.nomad_url, '_blank');
+        } else {
+          alert('Nomad URL not configured');
+          window.location.href = '/';
+        }
+      } catch (error) {
+        console.error('Error fetching config:', error);
+        alert('Failed to get Nomad URL');
+      }
+    }
+
+    window.onload = function() {
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+      }
+
+      // Initial services load
+      loadServices();
+      
+      // Reload services when returning from settings
+      const reloadParam = new URLSearchParams(window.location.search).get('reload');
+      if (reloadParam) {
+        // Clean up URL but keep other settings intact
+        window.history.replaceState({}, document.title, '/dashboard');
+        // Immediate reload of services
+        loadServices();
+      }
+
+      // Set up periodic refresh
+      setInterval(loadServices, 30000);
+    }
+  </script>
+</body>
+</html>

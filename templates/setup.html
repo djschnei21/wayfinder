@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wayfinder - Setup</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMENBOEUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1yb3V0ZSI+PGNpcmNsZSBjeD0iNiIgY3k9IjE5IiByPSIzIi8+PHBhdGggZD0iTTkgMTloOC41YTMuNSAzLjUgMCAwIDAgMC03aC0xMWEzLjUgMy41IDAgMCAxIDAtN0gxNSIvPjxjaXJjbGUgY3g9IjE4IiBjeT0iNSIgcj0iMyIvPjwvc3ZnPg==">
+  <style>
+    :root {
+      --bg-primary: #f8f9fa;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f1f3f5;  /* Added */
+      --text-primary: #212529;
+      --accent: #00CA8E;
+      --border-subtle: #dee2e6;
+      --selection: rgba(0, 202, 142, 0.1);  /* Added */
+    }
+
+    body.dark-mode {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #252525;
+      --bg-tertiary: #303030;  /* Added */
+      --text-primary: #ffffff;
+      --border-subtle: #383838;
+      --selection: rgba(0, 202, 142, 0.2);  /* Added */
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .setup-container {
+      background: var(--bg-secondary);
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      width: 90%;
+      max-width: 500px;
+    }
+
+    h1 {
+      color: var(--accent);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      font-family: inherit;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .header-buttons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    .btn {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 12px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: var(--selection);
+      color: var (--accent);
+    }
+
+    .btn.submit-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .btn.submit-btn:hover {
+      opacity: 0.9;
+    }
+
+    .title-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .title-icon {
+      display: flex;
+      align-items: center;
+      width: 32px;
+      height: 32px;
+    }
+
+    .title-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--accent);
+    }
+
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 1rem 0;
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle-group:first-of-type {
+      margin-top: 0;
+    }
+
+    .toggle-group:hover {
+      background: var(--selection);
+    }
+
+    .toggle-group label {
+      margin: 0;
+      flex-grow: 1;
+      cursor: pointer;
+    }
+
+    .toggle-icon {
+      color: var(--text-primary);
+      transition: transform 0.3s ease;
+    }
+
+    .toggle-group.expanded .toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .settings-section {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+      margin-top: 0;
+    }
+
+    .settings-section.visible {
+      max-height: 200px;
+      opacity: 1;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-buttons">
+    <button class="btn" onclick="openNomadUI()">Nomad UI</button>
+    <button class="btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </div>
+  <div class="setup-container">
+    <div class="title-container">
+      <div class="title-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-route"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>
+      </div>
+      <h1>Wayfinder Setup</h1>
+    </div>
+
+    <div class="toggle-group expanded" onclick="toggleSection('nomadSettings')" id="nomadToggle">
+      <label>Nomad Configuration</label>
+      <span class="toggle-icon">▼</span>
+    </div>
+
+    <div id="nomadSettings" class="settings-section visible">
+      <div class="form-group">
+        <label for="nomadUrl">Nomad URL</label>
+        <input type="url" id="nomadUrl" placeholder="http://localhost:4646" required>
+      </div>
+      <div class="form-group">
+        <label for="nomadToken">Nomad Token (Optional)</label>
+        <input type="password" id="nomadToken" placeholder="Optional ACL token" 
+               onfocus="handleTokenFocus(this)" onblur="handleTokenBlur(this)">
+      </div>
+    </div>
+    
+    <div class="toggle-group" onclick="toggleSection('consulSettings')" id="consulToggle">
+      <label>Consul Integration</label>
+      <span class="toggle-icon">▼</span>
+    </div>
+
+    <div id="consulSettings" class="settings-section">
+      <div class="form-group">
+        <label for="consulUrl">Consul URL</label>
+        <input type="url" id="consulUrl" placeholder="http://localhost:8500">
+      </div>
+      <div class="form-group">
+        <label for="consulToken">Consul Token (Optional)</label>
+        <input type="password" id="consulToken" placeholder="Optional ACL token"
+               onfocus="handleTokenFocus(this)" onblur="handleTokenBlur(this)">
+      </div>
+    </div>
+    
+    <button class="btn submit-btn" onclick="saveConfig()">Save Configuration</button>
+  </div>
+
+  <script>
+    function toggleSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      const toggle = document.getElementById(sectionId.replace('Settings', 'Toggle'));
+      section.classList.toggle('visible');
+      toggle.classList.toggle('expanded');
+    }
+
+    async function loadConfig() {
+      try {
+        const response = await fetch('/api/config');
+        if (!response.ok) {
+          throw new Error('Failed to load configuration');
+        }
+        
+        const config = await response.json();
+        
+        // Set Nomad config and expand section
+        if (config.nomad_url) {
+          document.getElementById('nomadUrl').value = config.nomad_url;
+          if (config.has_nomad_token) {
+            const nomadToken = document.getElementById('nomadToken');
+            nomadToken.value = '••••••••';
+            nomadToken.setAttribute('data-has-token', 'true');
+          }
+        }
+        
+        // Handle Consul settings
+        if (config.consul_url) {
+          document.getElementById('consulUrl').value = config.consul_url;
+          toggleSection('consulSettings');
+          
+          if (config.has_consul_token) {
+            const consulToken = document.getElementById('consulToken');
+            consulToken.value = '••••••••';
+            consulToken.setAttribute('data-has-token', 'true');
+          }
+        }
+      } catch (error) {
+        console.error('Error loading configuration:', error);
+      }
+    }
+
+    async function saveConfig() {
+      const nomadUrl = document.getElementById('nomadUrl').value.trim();
+      const consulUrl = document.getElementById('consulUrl').value.trim();
+      const nomadToken = document.getElementById('nomadToken');
+      const consulToken = document.getElementById('consulToken');
+      
+      if (!nomadUrl) {
+        alert('Nomad URL is required');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('nomad_url', nomadUrl);
+      
+      // Only include consul URL if not empty
+      if (consulUrl) {
+        formData.append('consul_url', consulUrl);
+        // Only include consul token if we have a consul URL
+        if (!consulToken.getAttribute('data-has-token') || consulToken.value !== '••••••••') {
+          formData.append('consul_token', consulToken.value);
+        }
+      }
+      
+      // Handle Nomad token
+      if (!nomadToken.getAttribute('data-has-token') || nomadToken.value !== '••••••••') {
+        formData.append('nomad_token', nomadToken.value);
+      }
+
+      try {
+        const response = await fetch('/api/config', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to save configuration');
+        }
+        
+        // Keep darkMode setting but force service reload
+        window.location.href = '/dashboard?reload=' + Date.now();
+      } catch (error) {
+        alert('Failed to save configuration: ' + error.message);
+      }
+    }
+
+    function toggleDarkMode() {
+      const darkModeOn = document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', darkModeOn);
+    }
+
+    function openNomadUI() {
+      const url = document.getElementById('nomadUrl').value;
+      if (url) {
+        window.open(url, '_blank');
+      } else {
+        alert('Please enter a Nomad URL first');
+      }
+    }
+
+    function handleTokenFocus(input) {
+      if (input.value === '••••••••') {
+        input.value = '';
+      }
+    }
+
+    function handleTokenBlur(input) {
+      if (!input.value && input.getAttribute('data-has-token')) {
+        input.value = '••••••••';
+      }
+    }
+
+    // Update window.onload to load both dark mode and config
+    window.onload = function() {
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+      }
+      loadConfig();
+    }
+  </script>
+</body>
+</html>
