@@ -28,7 +28,7 @@ job "wayfinder" {
       driver = "docker"
 
       config {
-        image = "wayfinder:latest"
+        image = "djschnei/wayfinder:latest"
         ports = ["http"]
       }
 
