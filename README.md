@@ -32,7 +32,7 @@ Wayfinder is a lightweight service discovery and navigation tool designed for ho
 The easiest way to deploy Wayfinder is using the pre-built Docker image:
 
 ```bash
-docker run -p 5000:5000 djschne/wayfinder:latest
+docker run -p 5000:5000 djschnei/wayfinder:latest
 ```
 
 ### Deploy to Nomad
@@ -53,7 +53,7 @@ The job specification includes:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/wayfinder.git
+git clone https://github.com/djschnei21/wayfinder.git
 cd wayfinder
 ```
 
