@@ -1,4 +1,4 @@
-# <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMENBOEUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1yb3V0ZSI+PGNpcmNsZSBjeD0iNiIgY3k9IjE5IiByPSIzIi8+PHBhdGggZD0iTTkgMTloOC41YTMuNSAzLjUgMCAwIDAgMC03aC0xMWEzLjUgMy41IDAgMCAxIDAtN0gxNSIvPjxjaXJjbGUgY3g9IjE4IiBjeT0iNSIgcj0iMyIvPjwvc3ZnPg==" width="32" height="32" style="vertical-align: middle"> Wayfinder
+# <img src="logos/wayfinder.svg" width="32" height="32" style="vertical-align: middle"> Wayfinder
 
 Wayfinder is a service discovery and navigation tool designed to work with HashiCorp Nomad and Consul. It provides a clean, modern interface for discovering and accessing services across your infrastructure.
 
