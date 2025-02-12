@@ -1,6 +1,6 @@
 # <img src="logos/wayfinder.svg" width="32" height="32" style="vertical-align: middle"> Wayfinder
 
-Wayfinder is a service discovery and navigation tool designed to work with HashiCorp Nomad and Consul. It provides a clean, modern interface for discovering and accessing services across your infrastructure.
+Wayfinder is a lightweight service discovery and navigation tool designed for homelab environments running HashiCorp Nomad and Consul. It provides a clean, modern interface for discovering and accessing services across your personal infrastructure. While functional and reliable, it's intended for personal or small-scale deployments rather than production or enterprise environments.
 
 ## Features
 
