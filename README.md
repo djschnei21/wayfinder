@@ -12,6 +12,14 @@ Wayfinder is a service discovery and navigation tool designed to work with Hashi
 - 🔄 Automatic service refresh
 - 📋 One-click URL copying
 
+## Screenshots
+
+### Configuration Page
+![Configuration Page](screenshots/1.png)
+
+### Service Dashboard
+![Service Dashboard](screenshots/2.png)
+
 ## Prerequisites
 
 - HashiCorp Nomad (required)
